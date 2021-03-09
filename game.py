@@ -23,13 +23,29 @@ class Game:
         self.SCORE_TEXT = Text(f"SCORE: {self.SCORE}")
         self.SCORE_TEXT.setPOS(0, 0)
         self.INSTRUCTIONS = Text("Press SPACE to start!")
-        self.INSTRUCTIONS.setPOS(self.WINDOW.getVirtualWidth()//2 - self.INSTRUCTIONS.getWidth()//2, self.WINDOW.getVirtualHeight() - 40)
+        self.INSTRUCTIONS.setPOS(self.WINDOW.getVirtualWidth()//2 - self.INSTRUCTIONS.getWidth()//2, self.WINDOW.getVirtualHeight() - 70)
+        self.BOXES = []
+
+        for i in range(5):
+            self.BOXES.append(Box(40,20))
+        for box in range(len(self.BOXES)):
+            X = self.BOXES[box].getWidth()
+            self.BOXES[box].setPOS((self.BOXES[box].getWidth() + (self.BOXES[box].getWidth()*box)) - 10, 100)
+        """
+        self.BOX1 = Box(80, 40)
+        self.BOX2 = Box(80, 40)
+        self.BOX1.setPOS(self.BOX1.getWidth(), 100)
+        self.BOX2.setPOS(self.BOX2.getWidth() + ((self.BOX2.getWidth()) + 10), 100)
+        """
+
+
+
 
         # BOXES
-        self.PLAYER = Box(50, 10)
+        self.PLAYER = Box(100, 10)
         self.PLAYER.setPOS(self.WINDOW.getVirtualWidth()//2 - self.PLAYER.getWidth()//2, self.WINDOW.getVirtualHeight() - 15)
         self.BALL = Box(10,10)
-        self.PLAYER.setPOS(self.WINDOW.getVirtualWidth() // 2 - self.BALL.getWidth() // 2, self.WINDOW.getVirtualHeight() - 20)
+        self.PLAYER.setPOS(self.WINDOW.getVirtualWidth()//2 - self.BALL.getWidth() // 2, self.WINDOW.getVirtualHeight() - 20)
 
     def start(self, KEYPRESSES):
         if KEYPRESSES[pygame.K_SPACE] == 1:
@@ -41,9 +57,9 @@ class Game:
                 SPRITE1.setDirectionY(-1)
             if abs(SPRITE2.getRect().bottom - SPRITE1.getRect().top) < 10 and SPRITE1.getSpeed() > 0:
                 SPRITE1.setDirectionY(-1)
-            if abs(SPRITE2.getRect().right - SPRITE1.left) < 10 and SPRITE1.getSpeed() > 0:
+            if abs(SPRITE2.getRect().right - SPRITE1.getRect().left) < 10 and SPRITE1.getSpeed() > 0:
                 SPRITE1.setDirectionX(-1)
-            if abs(SPRITE2.left - SPRITE1.right) < 10 and SPRITE1.getSpeed() > 0:
+            if abs(SPRITE2.getRect().left - SPRITE1.getRect().right) < 10 and SPRITE1.getSpeed() > 0:
                 SPRITE1.setDirectionX(-1)
 
 
@@ -64,6 +80,10 @@ class Game:
             self.WINDOW.getScreen().blit(self.INSTRUCTIONS.getScreen(), self.INSTRUCTIONS.getPOS())
             self.WINDOW.getScreen().blit(self.PLAYER.getScreen(), self.PLAYER.getPOS())
             self.WINDOW.getScreen().blit(self.BALL.getScreen(), self.BALL.getPOS())
+            #self.WINDOW.getScreen().blit(self.BOX1.getScreen(), self.BOX1.getPOS())
+            #self.WINDOW.getScreen().blit(self.BOX2.getScreen(), self.BOX2.getPOS())
+            for box in self.BOXES:
+                self.WINDOW.getScreen().blit(box.getScreen(), box.getPOS())
             self.WINDOW.updateFrame()
 
             if self.START_GAME == True:
