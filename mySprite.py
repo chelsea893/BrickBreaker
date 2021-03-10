@@ -66,8 +66,6 @@ class MySprite:
 
     def vertBounce(self, SCREEN):
         self.Y = self.Y + self.DIR_Y*self.SPEED
-        if self.Y > SCREEN.getVirtualHeight() - self.getHeight():
-            self.DIR_Y = -1
         if self.Y < 0:
             self.DIR_Y = 1
 
