@@ -22,10 +22,16 @@ class Box(MySprite):
         self.COLOR = COLOR
         self.SCREEN = pygame.Surface(self.DIMENSION, pygame.SRCALPHA, 32)
         self.SCREEN.fill(self.COLOR)
-    """
-    def adMove(self, KEYPRESSES):
-        super().adMove(KEYPRESSES)
-    """
+        self.BOXLIFE = 2
+
+    def setBoxLife(self,LIFE):
+        self.BOXLIFE = LIFE
+
+    def setColor(self,COLOR):
+        self.COLOR = COLOR
+
+    def getBoxLife(self,LIFE):
+        return self.BOXLIFE
 
 if __name__ == "__main__":
     from window import Window

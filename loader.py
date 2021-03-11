@@ -6,3 +6,8 @@ class Color:
     GREEN = (0,255,0)
     BLUE = (0,0,255)
     MAGENTA = (255, 0, 255)
+
+class Image:
+    MULTIPLIER = "assets/multiplier.png"
+    BOMB = "assets/bomb.png"
+    TIME = "assets/time.png"

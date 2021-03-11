@@ -77,6 +77,9 @@ class MySprite:
     def setDirectionY(self,DIRECTION):
         self.DIR_Y = DIRECTION
 
+    def setSpeed(self, SPEED):
+        self.SPEED = SPEED
+
 
 
 
