@@ -11,3 +11,4 @@ class Image:
     MULTIPLIER = "assets/multiplier.png"
     BOMB = "assets/bomb.png"
     TIME = "assets/time.png"
+    LIVES = "assets/heart.png"

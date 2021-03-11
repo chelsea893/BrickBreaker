@@ -71,6 +71,7 @@ class MySprite:
 
         self.POS = (self.X, self.Y)
 
+
     def setDirectionX(self,DIRECTION):
         self.DIR_X = DIRECTION
 
