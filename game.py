@@ -12,13 +12,31 @@ from box import Box
 from imageSprite import ImageSprite
 from random import randrange
 
+# Creates power ups
+def powerUps():
+    MULTIPLIER = []
+    for i in range(randrange(2, 3)):
+        MULTIPLIER.append(ImageSprite(Image.MULTIPLIER))
+        MULTIPLIER[-1].setScale(6)
+
+    BOMB = []
+    for i in range(randrange(2, 4)):
+        BOMB.append(ImageSprite(Image.BOMB))
+        BOMB[-1].setScale(40)
+    SLOW = []
+    for i in range(randrange(2, 3)):
+        SLOW.append(ImageSprite(Image.TIME))
+        SLOW[-1].setScale(60)
+    return MULTIPLIER, BOMB, SLOW
+
 class Game:
     pygame.init()
     def __init__(self):
         self.WINDOW = Window()
         self.WINDOW.setBackgroundColor(Color.GREY)
         self.START_GAME = False
-        # TEXT
+
+        # Start title
         self.TITLE = Text("BRICK BREAKER")
         self.TITLE.setPOS(self.WINDOW.getVirtualWidth()//2 - self.TITLE.getWidth()//2, 2)
         self.SCORE = 0
@@ -26,15 +44,19 @@ class Game:
         self.SCORE_TEXT.setPOS(0, 0)
         self.INSTRUCTIONS = Text("Press SPACE to start!")
         self.INSTRUCTIONS.setPOS(self.WINDOW.getVirtualWidth()//2 - self.INSTRUCTIONS.getWidth()//2, self.WINDOW.getVirtualHeight() - 70)
+
         self.BOXES = []
         self.END = False
         self.RESTART = False
         self.NEWSPEED = 0
         self.TIME_STOPPED = 0
+        self.FINAL_SCORE = 0
+        self.START_LEVEL = False
+        self.STARTUP = False
         # Timer
         self.TIMER = pygame.time.Clock()
         self.TIMER_MS = 0
-        self.TIME_LEFT = 30
+        self.TIME_LEFT = 40
         self.TIME_TEXT = Text(f"TIME LEFT: {self.TIME_LEFT}")
         self.TIME_TEXT.setPOS(self.WINDOW.getVirtualWidth() - self.TIME_TEXT.getWidth(), 0)
 
@@ -43,9 +65,15 @@ class Game:
         self.LIVES_TEXT = Text("LIVES:")
         self.LIVES_TEXT.setPOS(200, 0)
 
+
         #RESTART
-        self.RESTART_TEXT = Text("PRESS S/s TO START AGAIN!")
+        self.RESTART_TEXT = Text("PRESS s/S TO START AGAIN!")
         self.RESTART_TEXT.setPOS(self.WINDOW.getVirtualWidth() // 2 - self.RESTART_TEXT.getWidth() // 2, self.WINDOW.getVirtualHeight() - 70)
+
+        #BEGIN LEVEL 2 TEXT
+        self.STARTLEVEL2 = False
+        self.LEVEL2_TEXT = Text("PRESS y/Y TO START LEVEL 2!")
+        self.LEVEL2_TEXT.setPOS(self.WINDOW.getVirtualWidth() // 2 - self.LEVEL2_TEXT.getWidth() // 2,self.WINDOW.getVirtualHeight() - 70)
 
         # END TEXT
         self.END_TEXT = Text("GAME OVER!")
@@ -58,29 +86,17 @@ class Game:
         for i in range(3):
             self.LIVES.append(ImageSprite(Image.LIVES))
             self.LIVES[-1].setScale(60)
-
-        self.MULTIPLIER= []
-        for i in range(randrange(1,3)):
-            self.MULTIPLIER.append(ImageSprite(Image.MULTIPLIER))
-            self.MULTIPLIER[-1].setScale(12)
-
-        self.BOMB = []
-        for i in range(randrange(1,4)):
-            self.BOMB.append(ImageSprite(Image.BOMB))
-            self.BOMB[-1].setScale(6)
-        self.SLOW = []
-        for i in range(randrange(1,3)):
-            self.SLOW.append(ImageSprite(Image.TIME))
-            self.SLOW[-1].setScale(6)
+        self.MULTIPLIER, self.BOMB, self.SLOW = powerUps()
+        self.MULTIPLIER2, self.BOMB2, self.SLOW2 = powerUps()
         self.placeItems()
 
 
-
-        for i in range(24):
-            self.BOXES.append(Box(90,30))
+        # level 1
+        for i in range(24): #6
+            self.BOXES.append(Box(90,30)) # 90,30
         for box in range(len(self.BOXES)):
-            if box < 6:
-                self.BOXES[box].setPOS((10 + (self.BOXES[box].getWidth() * box)) + box * 10,40)
+            if box < 6: #6
+                self.BOXES[box].setPOS((10 + (self.BOXES[box].getWidth() * box)) + box * 10,40) # 10
             if 6 <= box <= 12:
                 self.BOXES[box].setPOS((30 + (self.BOXES[box].getWidth() * (box - 6)))+ (box -6) * 10, 80)
             if  12 <= box < 18:
@@ -88,11 +104,40 @@ class Game:
             if 18 <= box < 24:
                 self.BOXES[box].setPOS((30 + (self.BOXES[box].getWidth() * (box - 18))) + (box - 18) * 10, 160)
 
+
         # BOXES
         self.PLAYER = Box(100, 10)
         self.PLAYER.setPOS(self.WINDOW.getVirtualWidth()//2 - self.PLAYER.getWidth()//2, self.WINDOW.getVirtualHeight() - 15)
         self.BALL = Box(10,10)
         self.BALL.setPOS(self.WINDOW.getVirtualWidth()//2 - self.BALL.getWidth() // 2, self.WINDOW.getVirtualHeight() - 30)
+
+        # level 2
+
+        self.OBSTACLES = []
+        for i in range(2):
+            self.OBSTACLES.append(Box(150, 20, Color.BLACK))
+        self.OBSTACLES[0].setPOS(0, 200)
+        self.OBSTACLES[1].setPOS(self.WINDOW.getVirtualWidth()-self.OBSTACLES[1].getWidth(), 200)
+
+        self.BOXES2 = []
+        for i in range(24):
+            self.BOXES2.append(Box(90,30))
+        for box in range(len(self.BOXES2)):
+            if box < 5:
+                self.BOXES2[box].setPOS((50 + (self.BOXES2[box].getWidth() * box)) + box * 20, 40)
+            if 5 <= box <= 11:
+                self.BOXES2[box].setPOS((20 + (self.BOXES2[box].getWidth() * (box - 5)) + (box - 5) * 10), 80)
+            if 11 <= box <= 16:
+                self.BOXES2[box].setPOS((50 + (self.BOXES2[box].getWidth() * (box - 11)) + (box - 11) * 10), 120)
+            if 16 <= box <= 18:
+                self.BOXES2[box].setPOS((210 + (self.BOXES2[box].getWidth() * (box - 16)) + (box - 16) * 10), 200)
+            if 18 <= box <= 24:
+                self.BOXES2[box].setPOS((20 + (self.BOXES2[box].getWidth() * (box - 18)) + (box - 18) * 10), 250)
+
+
+
+
+
 
     def start(self, KEYPRESSES):
         if KEYPRESSES[pygame.K_SPACE] == 1:
@@ -115,11 +160,18 @@ class Game:
         for i in range(len(self.LIVES)):
             self.LIVES[i].setPOS((300 + (self.LIVES[i].getWidth() * i)) + i * 10, 0)
         for multiplier in self.MULTIPLIER:
-            multiplier.setPOS(randrange(self.WINDOW.getVirtualWidth() - multiplier.getWidth()), randrange(40, self.WINDOW.getVirtualHeight() - 50))
+            multiplier.setPOS(randrange(self.WINDOW.getVirtualWidth() - multiplier.getWidth()), randrange(45, self.WINDOW.getVirtualHeight() - 80))
         for bomb in self.BOMB:
-            bomb.setPOS(randrange(self.WINDOW.getVirtualWidth() - bomb.getWidth()),randrange(self.WINDOW.getVirtualHeight() - 50))
+            bomb.setPOS(randrange(self.WINDOW.getVirtualWidth() - bomb.getWidth()),randrange(35, self.WINDOW.getVirtualHeight() - 80))
         for slow in self.SLOW:
-            slow.setPOS(randrange(self.WINDOW.getVirtualWidth() - slow.getWidth()),randrange(self.WINDOW.getVirtualHeight() - 50))
+            slow.setPOS(randrange(self.WINDOW.getVirtualWidth() - slow.getWidth()),randrange(35,self.WINDOW.getVirtualHeight() - 80))
+
+        for multiplier in self.MULTIPLIER2:
+            multiplier.setPOS(randrange(self.WINDOW.getVirtualWidth() - multiplier.getWidth()), randrange(45, self.WINDOW.getVirtualHeight() - 80))
+        for bomb in self.BOMB2:
+            bomb.setPOS(randrange(self.WINDOW.getVirtualWidth() - bomb.getWidth()),randrange(35, self.WINDOW.getVirtualHeight() - 80))
+        for slow in self.SLOW2:
+            slow.setPOS(randrange(self.WINDOW.getVirtualWidth() - slow.getWidth()),randrange(35,self.WINDOW.getVirtualHeight() - 80))
 
     def getPowerCollision(self, SPRITE1, SPRITE2):
         if pygame.Rect.colliderect(SPRITE1.getRect(), SPRITE2.getRect()):
@@ -146,12 +198,11 @@ class Game:
                 return True
 
     def checkBallPos(self):
-        if (self.BALL.getY() == self.WINDOW.getVirtualHeight() - self.BALL.getWidth()) and self.NUMOFLIVES == 1:
+        if (self.BALL.getY() == self.WINDOW.getVirtualHeight() - self.BALL.getWidth()) and len(self.LIVES) == 1:
             self.END = True
-        elif (self.BALL.getY() == self.WINDOW.getVirtualHeight() - self.BALL.getWidth()) and self.NUMOFLIVES > 1:
+        elif (self.BALL.getY() == self.WINDOW.getVirtualHeight() - self.BALL.getWidth()) and len(self.LIVES) > 1:
             self.RESTART_TEXT.setPOS(self.WINDOW.getVirtualWidth() // 2 - self.RESTART_TEXT.getWidth() // 2,self.WINDOW.getVirtualHeight() - 70)
             self.TIME_TEXT.setPOS(1000,1000)
-            self.NUMOFLIVES = self.NUMOFLIVES -1
             self.LIVES.pop()
             self.BALL.setPOS(self.WINDOW.getVirtualWidth() // 2 - self.BALL.getWidth() // 2,self.WINDOW.getVirtualHeight() - 30)
             self.PLAYER.setPOS(self.WINDOW.getVirtualWidth() // 2 - self.PLAYER.getWidth() // 2, self.WINDOW.getVirtualHeight() - 15)
@@ -160,10 +211,21 @@ class Game:
             self.TIME_STOPPED = self.TIME_LEFT
             self.RESTART = True
 
+    def startLevel2(self):
+        if len(self.BOXES) == 0 and self.STARTLEVEL2 == False:
+            self.TIME_TEXT.setPOS(1000, 1000)
+            self.BALL.setPOS(self.WINDOW.getVirtualWidth() // 2 - self.BALL.getWidth() // 2, self.WINDOW.getVirtualHeight() - 30)
+            self.PLAYER.setPOS(self.WINDOW.getVirtualWidth() // 2 - self.PLAYER.getWidth() // 2,self.WINDOW.getVirtualHeight() - 15)
+            self.BALL.setSpeed(0)
+            self.TIMES = 50
+            self.TIME_LEFT = self.TIMES
+            self.STARTUP = True
 
-
-
-
+    def startLevel(self):
+        KEYPRESS = pygame.key.get_pressed()
+        if KEYPRESS[pygame.K_y] == 1:
+            self.BALL.setSpeed(5)
+            self.STARTLEVEL2 = True
 
 
 
@@ -194,7 +256,6 @@ class Game:
                 self.PLAYER.adMoveChkBoundaries(KEYS_PRESSED, self.WINDOW.getVirtualWidth())
                 self.WINDOW.getScreen().blit(self.TIME_TEXT.getScreen(), self.TIME_TEXT.getPOS())
                 self.WINDOW.getScreen().blit(self.LIVES_TEXT.getScreen(), self.LIVES_TEXT.getPOS())
-                self.updateTime()
                 self.INSTRUCTIONS.setPOS(1000, 1000)
                 self.TITLE.setPOS(1000, 1000)
                 # display power ups
@@ -236,7 +297,7 @@ class Game:
                 for box in self.BOXES:
                     self.getSpriteCollision(self.BALL,box)
                     if self.getSpriteCollision(self.BALL, box):
-                        box.setPOS(1000, 1000)
+                        self.BOXES.pop(self.BOXES.index(box))
                         self.SCORE = self.SCORE + 1
                         self.SCORE_TEXT.setText(f"SCORE: {self.SCORE}")
 
@@ -246,18 +307,90 @@ class Game:
                     KEYPRESS = pygame.key.get_pressed()
                     if KEYPRESS[pygame.K_s] == 1:
                         self.BALL.setSpeed(self.NEWSPEED)
-                        self.RESTART == False
                         self.RESTART_TEXT.setPOS(1000, 1000)
                         self.TIME_LEFT = self.TIME_STOPPED
                         self.TIME_TEXT.setText(f"TIME LEFT: {self.TIME_LEFT}")
                         self.TIME_TEXT.setPOS(self.WINDOW.getVirtualWidth() - self.TIME_TEXT.getWidth(), 0)
 
+
+                self.startLevel2()
+                if self.STARTUP == True:
+                    if len(self.MULTIPLIER) > 0:
+                        for multi in self.MULTIPLIER:
+                            self.MULTIPLIER.pop(self.MULTIPLIER.index(multi))
+
+                    if len(self.BOMB) > 0:
+                        for bomb in self.BOMB:
+                            self.BOMB.pop(self.BOMB.index(bomb))
+
+                    if len(self.SLOW) > 0:
+                        for slow in self.SLOW:
+                            self.SLOW.pop(self.SLOW.index(slow))
+
+                    self.WINDOW.getScreen().blit(self.LEVEL2_TEXT.getScreen(), self.LEVEL2_TEXT.getPOS())
+                    for box in self.BOXES2:
+                        self.WINDOW.getScreen().blit(box.getScreen(), box.getPOS())
+                    for obstacles in self.OBSTACLES:
+                        self.WINDOW.getScreen().blit(obstacles.getScreen(), obstacles.getPOS())
+                    self.startLevel()
+                    if self.STARTLEVEL2 == True:
+                        for multiplier in self.MULTIPLIER2:
+                            self.WINDOW.getScreen().blit(multiplier.getScreen(), multiplier.getPOS())
+                        for bomb in self.BOMB2:
+                            self.WINDOW.getScreen().blit(bomb.getScreen(), bomb.getPOS())
+                        for slow in self.SLOW2:
+                            self.WINDOW.getScreen().blit(slow.getScreen(), slow.getPOS())
+                        self.LEVEL2_TEXT.setPOS(1000, 1000)
+                        self.TIME_TEXT.setText(f"TIME LEFT: {self.TIME_LEFT}")
+                        self.TIME_TEXT.setPOS(self.WINDOW.getVirtualWidth() - self.TIME_TEXT.getWidth(), 0)
+
+                        for multiplier in self.MULTIPLIER2:
+                            if self.getPowerCollision(self.BALL, multiplier):
+                                multiplier.setPOS(1000, 1000)
+                                self.SCORE = self.SCORE * 2
+                                self.SCORE_TEXT.setText(f"SCORE: {self.SCORE}")
+
+                        for bomb in self.BOMB2:
+                            if self.getPowerCollision(self.BALL, bomb):
+                                bomb.setPOS(1000, 1000)
+                                self.SCORE = self.SCORE - 1
+                                self.SCORE_TEXT.setText(f"SCORE: {self.SCORE}")
+
+                        for slow in self.SLOW2:
+                            if self.getPowerCollision(self.BALL, slow):
+                                slow.setPOS(1000, 1000)
+                                self.TIME_LEFT = self.TIME_LEFT + 5
+                                self.TIME_TEXT.setText(f"TIME LEFT: {self.TIME_LEFT}")
+
+
+
+
+                        # collision with box
+                        for box in self.BOXES2:
+                            self.getSpriteCollision(self.BALL, box)
+                            if self.getSpriteCollision(self.BALL, box):
+                                self.BOXES2.pop(self.BOXES2.index(box))
+                                self.SCORE = self.SCORE + 1
+                                self.SCORE_TEXT.setText(f"SCORE: {self.SCORE}")
+
+                        # collision with obstacle
+                        for obstacles in self.OBSTACLES:
+                            self.getSpriteCollision(self.BALL, obstacles)
+
+
+
                 self.checkTime()
+                self.updateTime()
                 if self.END == True or self.checkTime():
                     self.WINDOW.clearScreen()
-                    self.SCORE_END.setText(f"YOUR SCORE WAS: {self.SCORE}")
+                    self.FINAL_SCORE = self.SCORE
+                    self.SCORE_END.setText(f"YOUR SCORE WAS: {self.FINAL_SCORE}")
                     self.WINDOW.getScreen().blit(self.END_TEXT.getScreen(), self.END_TEXT.getPOS())
                     self.WINDOW.getScreen().blit(self.SCORE_END.getScreen(), self.SCORE_END.getPOS())
+
+
+
+
 
             self.WINDOW.updateFrame()
 
