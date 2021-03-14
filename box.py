@@ -9,7 +9,7 @@ from loader import Color
 from mySprite import MySprite
 
 
-class Box(MySprite):
+class Box(MySprite): # inherits the MySprite class
     def __init__(self, WIDTH = 1, HEIGHT =1, X =1, Y=0, COLOR = Color.WHITE):
         super().__init__()
         self.WIDTH = WIDTH
@@ -24,7 +24,7 @@ class Box(MySprite):
         self.SCREEN.fill(self.COLOR)
 
 # --- MODIFIER METHODS --- #
-    def setColor(self, NEWCOLOR):
+    def setColor(self, NEWCOLOR): # use of setter method to encapsulate
         self.COLOR = NEWCOLOR
         self.SCREEN.fill(self.COLOR)
 

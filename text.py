@@ -1,12 +1,14 @@
 '''
 title: text object
+author: Chelsea Chen
+date-created: 2021-03-08
 '''
 
 from loader import Color
 import pygame
 from mySprite import MySprite
 
-class Text(MySprite):
+class Text(MySprite): # inherits the MySprite class
     def __init__(self, TEXT = "Hello World", COLOR = Color.WHITE):
         super().__init__()
         self.TEXT = TEXT
@@ -15,7 +17,7 @@ class Text(MySprite):
         self.SCREEN = self.FONT.render(self.TEXT, True, self.COLOR)
 
     # --- MODIFIER METHODS --- #
-
+    # use of setter/modifier methods to encapsulate
     def setText(self, NEW_TEXT):
         self.TEXT = NEW_TEXT
         self.SCREEN = self.FONT.render(self.TEXT, True, self.COLOR)

@@ -5,8 +5,7 @@ date-created: 2021-03-08
 '''
 import pygame
 class MySprite:
-
-    def __init__(self):
+    def __init__(self): # acts as a parent class to Box, Text, and ImageSprite class
         self.WIDTH = 0
         self.HEIGHT = 0
         self.DIMENSION = (self.WIDTH, self.HEIGHT)
@@ -20,7 +19,7 @@ class MySprite:
         self.DIR_Y = 1
 
     # --- MODIFIER METHODS --- #
-
+    # use of setter/modifier methods to encapsulate
     def setPOS(self,X, Y):
         self.X = X
         self.Y = Y
@@ -81,6 +80,7 @@ class MySprite:
 
 
     # ---- ACCESSOR METHODS --- #
+    # use of getter/accessor methods to encapsulate
 
     def getScreen(self):
         return self.SCREEN

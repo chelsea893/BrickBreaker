@@ -1,7 +1,7 @@
 """
 title: Custom Classes
 author: Chelsea Chen
-date-created: 2021-03-02
+date-created: 2021-03-08
 """
 
 import pygame
@@ -22,6 +22,7 @@ class Window:
         self.CAPTION = pygame.display.set_caption(self.TITLE)
 
     # --- MODIFIER METHODS (SETTER) --- #
+    # use of setter/modifier methods to encapsulate
 
     def updateFrame(self):
         self.FRAME.tick(self.FPS)
@@ -34,10 +35,8 @@ class Window:
         self.BACKGROUND = COLOR
         self.clearScreen()
 
-
-
-
     # --- ACCESSOR METHODS (GETTER) --- #
+    # use of getter/accessor methods to encapsulate
 
     def getScreen(self):
         return self.SCREEN
