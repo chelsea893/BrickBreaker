@@ -61,7 +61,7 @@ class MySprite:
 
     def vertBounce(self, SCREEN):
         self.Y = self.Y + self.DIR_Y*self.SPEED
-        if self.Y < 35:
+        if self.Y < 30:
             self.DIR_Y = 1
 
         self.POS = (self.X, self.Y)

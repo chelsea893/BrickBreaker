@@ -48,6 +48,8 @@ class Game:
         self.SCORE_TEXT.setPOS(0, 0)
         self.INSTRUCTIONS = Text("Press SPACE to start!")
         self.INSTRUCTIONS.setPOS(self.WINDOW.getVirtualWidth()//2 - self.INSTRUCTIONS.getWidth()//2, self.WINDOW.getVirtualHeight() - 70)
+        self.KEY = ImageSprite(Image.KEY)
+        self.KEY.setPOS(10, 250)
 
         self.RESTART = False
         self.TIME_STOPPED = 0
@@ -267,6 +269,8 @@ class Game:
             self.WINDOW.getScreen().blit(self.INSTRUCTIONS.getScreen(), self.INSTRUCTIONS.getPOS())
             self.WINDOW.getScreen().blit(self.PLAYER.getScreen(), self.PLAYER.getPOS())
             self.WINDOW.getScreen().blit(self.BALL.getScreen(), self.BALL.getPOS())
+            self.WINDOW.getScreen().blit(self.KEY.getScreen(), self.KEY.getPOS())
+
 
             for box in self.BOXES:
                 self.WINDOW.getScreen().blit(box.getScreen(), box.getPOS())
@@ -279,6 +283,7 @@ class Game:
                 # clear instructions and title off the screen
                 self.INSTRUCTIONS.setPOS(1000, 1000)
                 self.TITLE.setPOS(1000, 1000)
+                self.KEY.setPOS(1000,1000)
 
                 # Move the player
                 self.PLAYER.adMoveChkBoundaries(KEYS_PRESSED, self.WINDOW.getVirtualWidth())

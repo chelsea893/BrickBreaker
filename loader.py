@@ -12,3 +12,4 @@ class Image:
     BOMB = "assets/bomb.png"
     TIME = "assets/time.png"
     LIVES = "assets/heart.png"
+    KEY = "assets/key.png"
