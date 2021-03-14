@@ -4,8 +4,10 @@ This program is a recreation of the game brick breaker. The goal of the game is 
 ## Planning
 When planning to create the program, I designed UML tables and a flowchart to help with programming the classes and methods needed for the program. 
 
+#### UML Tables
 ![UML Tables](images/BrickBreakerUML.png)
 
+#### Flowchart
 ![Flowchart](images/BrickBreakerFlowchart.png)
 
 Also, when planning for the collision function, I referred to a youtube video(https://www.youtube.com/watch?v=1_H7InPMjaY), which helped me with understanding the logic of how to program for the collisions so the objects are able to bounce off of each other. 
