@@ -22,36 +22,11 @@ class Box(MySprite):
         self.COLOR = COLOR
         self.SCREEN = pygame.Surface(self.DIMENSION, pygame.SRCALPHA, 32)
         self.SCREEN.fill(self.COLOR)
-        self.BOXLIFE = 2
 
-    def setBoxLife(self,LIFE):
-        self.BOXLIFE = LIFE
-
-    def setColor(self,COLOR):
-        self.COLOR = COLOR
-
-    def getBoxLife(self,LIFE):
-        return self.BOXLIFE
-
-if __name__ == "__main__":
-    from window import Window
-    import sys
-    pygame.init()
-
-    WINDOW = Window()
-
-    BOX1 = Box(50,50)
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+# --- MODIFIER METHODS --- #
+    def setColor(self, NEWCOLOR):
+        self.COLOR = NEWCOLOR
+        self.SCREEN.fill(self.COLOR)
 
 
-        KEYS_PRESSED = pygame.key.get_pressed()
-        BOX1.wasdMove(KEYS_PRESSED)
-        WINDOW.clearScreen()
-        WINDOW.getScreen().blit(BOX1.getScreen(), BOX1.getPOS())
-        WINDOW.updateFrame()
 

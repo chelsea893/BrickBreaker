@@ -16,7 +16,6 @@ class Window:
         self.HEIGHT = HEIGHT
         self.SCREEN_DIMESIONS = (self.WIDTH, self.HEIGHT)
         self.BACKGROUND = Color.GREY
-        self.BACKGROUND_IMAGE = None
         self.FRAME = pygame.time.Clock()
         self.SCREEN = pygame.display.set_mode(self.SCREEN_DIMESIONS)
         self.SCREEN.fill(self.BACKGROUND)
@@ -29,10 +28,7 @@ class Window:
         pygame.display.flip()
 
     def clearScreen(self):
-        if self.BACKGROUND_IMAGE is None:
-            self.SCREEN.fill(self.BACKGROUND)
-        else:
-            self.SCREEN.blit(self.BACKGROUND_IMAGE.getScreen(), self.BACKGROUND_IMAGE.getPOS())
+        self.SCREEN.fill(self.BACKGROUND)
 
     def setBackgroundColor(self,COLOR):
         self.BACKGROUND = COLOR
@@ -52,19 +48,3 @@ class Window:
     def getVirtualHeight(self):
         return self.SCREEN.get_rect().height
 
-
-if __name__ == "__main__":
-    import sys
-    pygame.init()
-    WINDOW = Window()
-    WINDOW.setBackgroundColor(Color.RED)
-    RUNNING = True
-
-    while RUNNING:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                RUNNING = False
-                pygame.quit()
-                sys.exit()
-
-        WINDOW.updateFrame()

@@ -1,7 +1,7 @@
 '''
 title: Abstract Sprite Class
 author: Chelsea Chen
-date-created: 2021-03-03
+date-created: 2021-03-08
 '''
 import pygame
 class MySprite:
@@ -31,10 +31,6 @@ class MySprite:
 
     def updateDimension(self):
         self.DIMENSION = (self.WIDTH, self.HEIGHT)
-
-
-
-    ## Movement
 
     def adMove(self, KEYPRESSES):
         if KEYPRESSES[pygame.K_d] == 1:
@@ -66,11 +62,10 @@ class MySprite:
 
     def vertBounce(self, SCREEN):
         self.Y = self.Y + self.DIR_Y*self.SPEED
-        if self.Y < 0:
+        if self.Y < 35:
             self.DIR_Y = 1
 
         self.POS = (self.X, self.Y)
-
 
     def setDirectionX(self,DIRECTION):
         self.DIR_X = DIRECTION
@@ -92,9 +87,6 @@ class MySprite:
 
     def getPOS(self):
         return self.POS
-
-    def getX(self):
-        return self.X
 
     def getY(self):
         return self.Y
